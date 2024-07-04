@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using MathExpressionLibrary.Exceptions;
+using System.Globalization;
 
 namespace MathExpressionLibrary.Tokenization
 {
@@ -108,7 +109,7 @@ namespace MathExpressionLibrary.Tokenization
                     {
                         if (divisor > -1)
                         {
-                            throw new FormatException();
+                            throw new ExpressionException(Position, "An invalid number was detected with multiple decimal separators.");
                         }
 
                         divisor = 1;
@@ -142,7 +143,7 @@ namespace MathExpressionLibrary.Tokenization
 
                 if (ch != '"')
                 {
-                    throw new FormatException();
+                    throw new ExpressionException(Position, "The end of the expression was reached before a matching close quote was found.");
                 }
 
                 Token token = new(Position, expression.Substring(Position + 1, i - 1), TokenType.Literal, TokenOperator.Atomic);

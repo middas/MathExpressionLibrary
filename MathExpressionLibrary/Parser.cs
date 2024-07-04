@@ -1,4 +1,5 @@
-﻿using MathExpressionLibrary.Expressions;
+﻿using MathExpressionLibrary.Exceptions;
+using MathExpressionLibrary.Expressions;
 using MathExpressionLibrary.Tokenization;
 
 namespace MathExpressionLibrary
@@ -17,10 +18,10 @@ namespace MathExpressionLibrary
 
             if (lastToken.TokenOperator != TokenOperator.End)
             {
-                throw new NotSupportedException();
+                throw new ExpressionException(lastToken.StartPointer, "The expression parsing terminated before reaching the end of the expression.");
             }
 
-            return result.Optimize();
+            return result;
         }
 
         private IExpression ParseCompare(Tokenizer tokenizer)
@@ -113,7 +114,7 @@ namespace MathExpressionLibrary
                 case TokenType.Group:
                     if (lastToken.TokenOperator != TokenOperator.Open)
                     {
-                        // throw
+                        throw new ExpressionException(lastToken.StartPointer, "A closing bracket was found without an opening bracket.");
                     }
 
                     lastToken = tokenizer.GetToken();
@@ -129,7 +130,7 @@ namespace MathExpressionLibrary
 
                     if (lastToken.TokenOperator != TokenOperator.Close)
                     {
-                        // throw
+                        throw new ExpressionException(lastToken.StartPointer, "A closing bracket was required but is missing.");
                     }
                     break;
                 case TokenType.Identifier:
@@ -139,8 +140,7 @@ namespace MathExpressionLibrary
                     expression = new AtomicExpression(lastToken);
                     break;
                 default:
-                    throw new NotSupportedException();
-                    break;
+                    throw new ExpressionException(lastToken.StartPointer, $"An unsupported type of {lastToken.Value} was encountered.");
             }
 
             lastToken = tokenizer.GetToken();
