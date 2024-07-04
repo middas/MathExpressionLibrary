@@ -134,8 +134,34 @@ namespace MathExpressionLibrary
                     }
                     break;
                 case TokenType.Identifier:
-                    throw new NotImplementedException();
-                    break;
+                    // check for function
+                    if (lastToken.Value is not null && lastToken.Value is string identifier)
+                    {
+                        if (FunctionExpression.HasFunction(identifier))
+                        {
+                            List<IExpression> parameters = [];
+
+                            if (tokenizer.Peek().TokenOperator == TokenOperator.Open)
+                            {
+                                lastToken = tokenizer.GetToken();
+
+                                while (lastToken.TokenOperator != TokenOperator.Close)
+                                {
+                                    if (lastToken.TokenOperator == TokenOperator.End)
+                                    {
+                                        throw new ExpressionException(lastToken.StartPointer, "Function is missing close paren.");
+                                    }
+
+                                    IExpression parameter = ParseCompare(tokenizer);
+                                    parameters.Add(parameter);
+                                }
+                            }
+
+                            expression = new FunctionExpression(identifier, lastToken, [.. parameters]);
+                            break;
+                        }
+                    }
+                    throw new ExpressionException(lastToken.StartPointer, $"An invalid identifier '{lastToken.Value ?? "NULL"}' was found.");
                 case TokenType.Literal:
                     expression = new AtomicExpression(lastToken);
                     break;

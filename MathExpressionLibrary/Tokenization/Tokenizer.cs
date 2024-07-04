@@ -35,10 +35,18 @@ namespace MathExpressionLibrary.Tokenization
         private readonly int length = expression.Length;
         private readonly char listSeparator = CultureInfo.CurrentCulture.TextInfo.ListSeparator[0];
 
+        private Token? nextToken = null;
+
         public int Position { get; private set; }
 
         public Token GetToken()
         {
+            if (nextToken is not null)
+            {
+                Position = nextToken.StartPointer + 1;
+                return nextToken;
+            }
+
             while (Position < length && char.IsWhiteSpace(expression[Position]))
             {
                 Position++;
@@ -162,6 +170,14 @@ namespace MathExpressionLibrary.Tokenization
             Token t = new(Position, expression.Substring(Position, i), TokenType.Identifier, TokenOperator.Atomic);
             Position += i;
             return t;
+        }
+
+        public Token Peek()
+        {
+            int currentPosition = Position;
+            nextToken = GetToken();
+            Position = currentPosition;
+            return nextToken;
         }
     }
 }
