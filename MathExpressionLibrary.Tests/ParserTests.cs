@@ -75,6 +75,12 @@ namespace MathExpressionLibrary.Tests
             yield return new TestCaseData("sum(1)").Returns(1);
             yield return new TestCaseData("sum(1,2,3)").Returns(6);
             yield return new TestCaseData("sum(1,2,3,4,5,6,7,8,9)").Returns(45);
+            yield return new TestCaseData("pi").Returns(Math.PI);
+            yield return new TestCaseData("e").Returns(Math.E);
+            yield return new TestCaseData("combin(8,2)").Returns(28);
+            yield return new TestCaseData("combina(4, 3)").Returns(20);
+            yield return new TestCaseData("combina(10, 3)").Returns(220);
+            yield return new TestCaseData("combina(5, 3)").Returns(35);
         }
     }
 }

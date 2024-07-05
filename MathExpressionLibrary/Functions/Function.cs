@@ -6,18 +6,19 @@ namespace MathExpressionLibrary.Functions
     {
         private readonly FunctionDelegate functionDelegate;
 
-        public Function(string name, string description, FunctionDelegate functionDelegate) : this(name, description, functionDelegate, 0, null)
+        public Function(string name, string description, string category, FunctionDelegate functionDelegate) : this(name, description, category, functionDelegate, 0, null)
         {
         }
 
-        public Function(string name, string description, FunctionDelegate functionDelegate, int minimumParameterCount) : this(name, description, functionDelegate, minimumParameterCount, null)
+        public Function(string name, string description, string category, FunctionDelegate functionDelegate, int minimumParameterCount) : this(name, description, category, functionDelegate, minimumParameterCount, null)
         {
         }
 
-        public Function(string name, string description, FunctionDelegate functionDelegate, int minimumParameterCount, int? maxmimumParameterCount)
+        public Function(string name, string description, string category, FunctionDelegate functionDelegate, int minimumParameterCount, int? maxmimumParameterCount)
         {
             Name = name;
             Description = description;
+            Category = category;
             this.functionDelegate = functionDelegate;
             MinimumParameterCount = minimumParameterCount;
             MaxmimumParameterCount = maxmimumParameterCount;
@@ -32,6 +33,7 @@ namespace MathExpressionLibrary.Functions
         public int MinimumParameterCount { get; set; }
 
         public string Name { get; }
+        public string Category { get; }
 
         public object? Evaluate(IExpression[]? parameters)
         {

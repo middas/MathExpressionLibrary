@@ -8,6 +8,11 @@ namespace MathExpressionLibrary.Functions
     public interface IFunction
     {
         /// <summary>
+        /// The category of the function
+        /// </summary>
+        public string Category { get; }
+
+        /// <summary>
         /// The function description
         /// </summary>
         public string Description { get; }
