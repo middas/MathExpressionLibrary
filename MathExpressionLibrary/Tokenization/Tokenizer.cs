@@ -43,8 +43,10 @@ namespace MathExpressionLibrary.Tokenization
         {
             if (nextToken is not null)
             {
-                Position = nextToken.StartPointer + 1;
-                return nextToken;
+                Token temp = (Token)nextToken.Clone();
+                nextToken = null;
+                Position = temp.StartPointer + 1;
+                return temp;
             }
 
             while (Position < length && char.IsWhiteSpace(expression[Position]))

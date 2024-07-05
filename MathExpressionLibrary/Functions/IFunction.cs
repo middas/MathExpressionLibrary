@@ -21,7 +21,7 @@ namespace MathExpressionLibrary.Functions
         /// <summary>
         /// The minimum number of parameters required
         /// </summary>
-        public int MinimumParamterCount { get; set; }
+        public int MinimumParameterCount { get; set; }
 
         /// <summary>
         /// The function name

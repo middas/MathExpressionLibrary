@@ -15,9 +15,9 @@ namespace MathExpressionLibrary.Tests
             Assert.That(expression.Evaluate(), Is.EqualTo(2));
         }
 
-        [TestCaseSource(nameof(OrderOfOperationsTests))]
+        [TestCaseSource(nameof(MathTests))]
         [DefaultFloatingPointTolerance(0.0001)]
-        public object ParseExpression_OrderOfOperations(string expression)
+        public object ParseExpression_MathTests(string expression)
         {
             var parser = new Parser();
             IExpression result = parser.ParseExpression(expression);
@@ -27,7 +27,7 @@ namespace MathExpressionLibrary.Tests
             return result.Evaluate()!;
         }
 
-        private static IEnumerable<TestCaseData> OrderOfOperationsTests()
+        private static IEnumerable<TestCaseData> MathTests()
         {
             yield return new TestCaseData("9-((2^3-3)*8)/6").Returns(2.33333333D);
             yield return new TestCaseData("7-(1+6)").Returns(0D);
@@ -72,6 +72,9 @@ namespace MathExpressionLibrary.Tests
             yield return new TestCaseData("1+1>3-2").Returns(true);
             yield return new TestCaseData("1+1<3+2").Returns(true);
             yield return new TestCaseData("(-4-(-8/-4)^2)*-6+-6>0").Returns(true);
+            yield return new TestCaseData("sum(1)").Returns(1);
+            yield return new TestCaseData("sum(1,2,3)").Returns(6);
+            yield return new TestCaseData("sum(1,2,3,4,5,6,7,8,9)").Returns(45);
         }
     }
 }

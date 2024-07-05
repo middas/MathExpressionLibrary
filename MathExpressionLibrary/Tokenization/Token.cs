@@ -33,10 +33,10 @@
         Identifier
     }
 
-    public sealed class Token
+    public sealed class Token : ICloneable
     {
         public Token(TokenType tokenType, TokenOperator tokenOperator) : this(0, null, tokenType, tokenOperator)
-        {   
+        {
         }
 
         public Token(int ptr, object? value, TokenType tokenType, TokenOperator tokenOperator)
@@ -55,6 +55,11 @@
 
         public object? Value { get; }
 
+        public object Clone()
+        {
+            return new Token(StartPointer, Value, TokenType, TokenOperator);
+        }
+
         public override bool Equals(object? obj)
         {
             if (obj is Token t)
@@ -64,7 +69,7 @@
                 {
                     result = t.Value.Equals(Value);
                 }
-                else if(result && Value is not null)
+                else if (result && Value is not null)
                 {
                     result = Value.Equals(t.Value);
                 }

@@ -19,9 +19,9 @@ namespace MathExpressionLibrary.Expressions
             if (functions.TryGetValue(functionName.ToUpperInvariant(), out IFunction? function))
             {
                 int parameterLength = parameters?.Length ?? 0;
-                if (parameterLength < function.MinimumParamterCount)
+                if (parameterLength < function.MinimumParameterCount)
                 {
-                    throw new FunctionException($"The function was passed {parameterLength} parameters, but requires a minimum of {function.MinimumParamterCount} parameters.");
+                    throw new FunctionException($"The function was passed {parameterLength} parameters, but requires a minimum of {function.MinimumParameterCount} parameters.");
                 }
 
                 if (function.MaxmimumParameterCount is not null && parameterLength > function.MaxmimumParameterCount)
@@ -42,6 +42,11 @@ namespace MathExpressionLibrary.Expressions
         public IExpression[]? Parameters { get; private set; }
 
         public Token Token { get; }
+
+        internal static void AddFunction(IFunction function)
+        {
+            functions[function.Name] = function;
+        }
 
         public static void AddFunction(string functionName, IFunction function)
         {
