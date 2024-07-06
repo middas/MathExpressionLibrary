@@ -81,6 +81,10 @@ namespace MathExpressionLibrary.Tests
             yield return new TestCaseData("combina(4, 3)").Returns(20);
             yield return new TestCaseData("combina(10, 3)").Returns(220);
             yield return new TestCaseData("combina(5, 3)").Returns(35);
+            yield return new TestCaseData("factdouble(6)").Returns(48);
+            yield return new TestCaseData("factdouble(7)").Returns(105);
+            yield return new TestCaseData("lcm(5,2)").Returns(10);
+            yield return new TestCaseData("lcm(24,36)").Returns(72);
         }
     }
 }
