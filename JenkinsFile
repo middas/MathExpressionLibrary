@@ -1,0 +1,17 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            script {
+                sh 'dotnet build'
+            }
+        }
+
+        stage('Test') {
+            script {
+                sh 'dotnet test'
+            }
+        }
+    }
+}
