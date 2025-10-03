@@ -5,6 +5,25 @@ namespace MathExpressionLibrary.Tests
     [TestFixture]
     public class ParserTests
     {
+        [TestCaseSource(nameof(MathTests))]
+        [DefaultFloatingPointTolerance(0.0001)]
+        public object ParseExpression_MathTests(string expression)
+        {
+            var parser = new Parser();
+            IExpression result = parser.ParseExpression(expression);
+
+            Assert.That(result, Is.Not.Null);
+
+            if (result is not AtomicExpression)
+            {
+                result = result.Optimize();
+            }
+
+            Assert.That(result, Is.TypeOf<AtomicExpression>());
+
+            return result.Evaluate()!;
+        }
+
         [Test]
         public void ParseExpression_Simple()
         {
@@ -15,16 +34,29 @@ namespace MathExpressionLibrary.Tests
             Assert.That(expression.Evaluate(), Is.EqualTo(2));
         }
 
-        [TestCaseSource(nameof(MathTests))]
-        [DefaultFloatingPointTolerance(0.0001)]
-        public object ParseExpression_MathTests(string expression)
+        [Test]
+        public void VariableExpression_Calculate()
         {
             var parser = new Parser();
-            IExpression result = parser.ParseExpression(expression);
+            parser.AddVariable("x", 7);
+            parser.AddVariable("y", 3);
 
-            Assert.That(result, Is.Not.Null);
+            IExpression expression = parser.ParseExpression("x+y");
 
-            return result.Evaluate()!;
+            Assert.That(expression, Is.Not.Null);
+            Assert.That(expression.Evaluate(), Is.EqualTo(10));
+        }
+
+        [Test]
+        public void VariableExpression_Simple()
+        {
+            var parser = new Parser();
+            parser.AddVariable("x", 1);
+            IExpression expression = parser.ParseExpression("x");
+
+            Assert.That(expression, Is.Not.Null);
+            Assert.That(expression, Is.TypeOf<VariableExpression>());
+            Assert.That(expression.Evaluate(), Is.EqualTo(1));
         }
 
         private static IEnumerable<TestCaseData> MathTests()
@@ -85,6 +117,7 @@ namespace MathExpressionLibrary.Tests
             yield return new TestCaseData("factdouble(7)").Returns(105);
             yield return new TestCaseData("lcm(5,2)").Returns(10);
             yield return new TestCaseData("lcm(24,36)").Returns(72);
+            yield return new TestCaseData("base(10,3)").Returns("101");
         }
     }
 }

@@ -72,7 +72,7 @@ namespace MathExpressionLibrary.Expressions
                 return d;
             }
 
-            return 0;
+            return Convert.ToDouble(value);
         }
     }
 }

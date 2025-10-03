@@ -163,7 +163,7 @@ namespace MathExpressionLibrary.Tokenization
 
             for (; i < length; i++)
             {
-                if (!char.IsLetterOrDigit(expression[Position + i]) && expression[Position + i] != '_')
+                if (Position + i >= length || !char.IsLetterOrDigit(expression[Position + i]) && expression[Position + i] != '_')
                 {
                     break;
                 }

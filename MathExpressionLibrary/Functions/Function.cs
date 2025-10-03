@@ -26,6 +26,8 @@ namespace MathExpressionLibrary.Functions
 
         public delegate object? FunctionDelegate(IList<IExpression>? arguments);
 
+        public string Category { get; }
+
         public string Description { get; }
 
         public int? MaxmimumParameterCount { get; set; }
@@ -33,7 +35,6 @@ namespace MathExpressionLibrary.Functions
         public int MinimumParameterCount { get; set; }
 
         public string Name { get; }
-        public string Category { get; }
 
         public object? Evaluate(IExpression[]? parameters)
         {

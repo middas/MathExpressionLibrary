@@ -67,7 +67,7 @@ namespace MathExpressionLibrary.Tests.Tokenization
             {
                 Token token = tokenizer.GetToken();
                 tokens.Add(token);
-                if(token.TokenOperator == TokenOperator.End)
+                if (token.TokenOperator == TokenOperator.End)
                 {
                     break;
                 }

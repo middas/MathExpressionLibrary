@@ -43,11 +43,6 @@ namespace MathExpressionLibrary.Expressions
 
         public Token Token { get; }
 
-        internal static void AddFunction(IFunction function)
-        {
-            functions[function.Name] = function;
-        }
-
         public static void AddFunction(string functionName, IFunction function)
         {
             if (HasFunction(functionName))
@@ -88,6 +83,11 @@ namespace MathExpressionLibrary.Expressions
             }
 
             return this;
+        }
+
+        internal static void AddFunction(IFunction function)
+        {
+            functions[function.Name] = function;
         }
     }
 }

@@ -1,7 +1,5 @@
 ﻿using MathExpressionLibrary.Exceptions;
 using MathExpressionLibrary.Expressions;
-using System.Collections.Generic;
-using System.Runtime;
 using static MathExpressionLibrary.Functions.Function;
 
 namespace MathExpressionLibrary.Functions
@@ -208,44 +206,44 @@ namespace MathExpressionLibrary.Functions
         }), 1, 1);
 
         private static IFunction Dec() => new Function("DECIMAL", "Converts the number and given radix to a decimal number", category, new FunctionDelegate((args) =>
-                                                                                                                                                                        {
-                                                                                                                                                                            const string Digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-                                                                                                                                                                            int radix = ToInteger(args!.ElementAt(1).Evaluate());
-                                                                                                                                                                            string? number = args!.ElementAt(0).Evaluate()?.ToString();
+        {
+            const string Digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            int radix = ToInteger(args!.ElementAt(1).Evaluate());
+            string? number = args!.ElementAt(0).Evaluate()?.ToString();
 
-                                                                                                                                                                            if (radix < 2 || radix > Digits.Length)
-                                                                                                                                                                                throw new FunctionException("The radix must be >= 2 and <= " +
-                                                                                                                                                                                    Digits.Length.ToString());
+            if (radix < 2 || radix > Digits.Length)
+                throw new FunctionException("The radix must be >= 2 and <= " +
+                    Digits.Length.ToString());
 
-                                                                                                                                                                            if (string.IsNullOrEmpty(number))
-                                                                                                                                                                                return 0;
+            if (string.IsNullOrEmpty(number))
+                return 0;
 
-                                                                                                                                                                            // Make sure the arbitrary numeral system number is in upper case
-                                                                                                                                                                            number = number.ToUpperInvariant();
+            // Make sure the arbitrary numeral system number is in upper case
+            number = number.ToUpperInvariant();
 
-                                                                                                                                                                            long result = 0;
-                                                                                                                                                                            long multiplier = 1;
-                                                                                                                                                                            for (int i = number.Length - 1; i >= 0; i--)
-                                                                                                                                                                            {
-                                                                                                                                                                                char c = number[i];
-                                                                                                                                                                                if (i == 0 && c == '-')
-                                                                                                                                                                                {
-                                                                                                                                                                                    // This is the negative sign symbol
-                                                                                                                                                                                    result = -result;
-                                                                                                                                                                                    break;
-                                                                                                                                                                                }
+            long result = 0;
+            long multiplier = 1;
+            for (int i = number.Length - 1; i >= 0; i--)
+            {
+                char c = number[i];
+                if (i == 0 && c == '-')
+                {
+                    // This is the negative sign symbol
+                    result = -result;
+                    break;
+                }
 
-                                                                                                                                                                                int digit = Digits.IndexOf(c);
-                                                                                                                                                                                if (digit == -1)
-                                                                                                                                                                                    throw new FunctionException(
-                                                                                                                                                                                        "Invalid character in the arbitrary numeral system number");
+                int digit = Digits.IndexOf(c);
+                if (digit == -1)
+                    throw new FunctionException(
+                        "Invalid character in the arbitrary numeral system number");
 
-                                                                                                                                                                                result += digit * multiplier;
-                                                                                                                                                                                multiplier *= radix;
-                                                                                                                                                                            }
+                result += digit * multiplier;
+                multiplier *= radix;
+            }
 
-                                                                                                                                                                            return result;
-                                                                                                                                                                        }), 2, 2);
+            return result;
+        }), 2, 2);
 
         private static IFunction Degrees() => new Function("DEGREES", "Converts radians to degrees", category, new FunctionDelegate((args) => ToDouble(args!.First().Evaluate()) * Math.PI / 180.0), 1, 1);
 
