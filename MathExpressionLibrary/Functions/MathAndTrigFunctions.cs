@@ -84,60 +84,60 @@ namespace MathExpressionLibrary.Functions
         private static IFunction Atanh() => new Function("ATANH", "The hyperbolic arctangent of a number", category, new FunctionDelegate((args) => Math.Atanh(ToDouble(args!.First().Evaluate()))), 1, 1);
 
         private static IFunction Base() => new Function("BASE", "Converts the number into the text representation of the given radix", category, new FunctionDelegate((args) =>
-                                                                                        {
-                                                                                            double doubleNumber = ToDouble(args!.ElementAt(0).Evaluate());
-                                                                                            int radix = ToInteger(args!.ElementAt(1).Evaluate());
-                                                                                            const int BitsInLong = 64;
-                                                                                            const string Digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-                                                                                            if (radix < 2 || radix > Digits.Length)
-                                                                                                throw new ArgumentException("The radix must be >= 2 and <= " + Digits.Length.ToString());
-
-                                                                                            if (doubleNumber == 0)
-                                                                                                return "0";
-
-                                                                                            int index = BitsInLong - 1;
-                                                                                            long currentNumber = (long)Math.Abs(doubleNumber);
-                                                                                            char[] charArray = new char[BitsInLong];
-
-                                                                                            while (currentNumber != 0)
-                                                                                            {
-                                                                                                int remainder = (int)(currentNumber % radix);
-                                                                                                charArray[index--] = Digits[remainder];
-                                                                                                currentNumber = currentNumber / radix;
-                                                                                            }
-
-                                                                                            string result = new(charArray, index + 1, BitsInLong - index - 1);
-                                                                                            if (doubleNumber < 0)
-                                                                                            {
-                                                                                                result = "-" + result;
-                                                                                            }
-
-                                                                                            return result;
-                                                                                        }), 2, 2);
+        {
+            double doubleNumber = ToDouble(args!.ElementAt(0).Evaluate());
+            int radix = ToInteger(args!.ElementAt(1).Evaluate());
+            const int BitsInLong = 64;
+            const string Digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    
+            if (radix < 2 || radix > Digits.Length)
+                throw new ArgumentException("The radix must be >= 2 and <= " + Digits.Length.ToString());
+    
+            if (doubleNumber == 0)
+                return "0";
+    
+            int index = BitsInLong - 1;
+            long currentNumber = (long)Math.Abs(doubleNumber);
+            char[] charArray = new char[BitsInLong];
+    
+            while (currentNumber != 0)
+            {
+                int remainder = (int)(currentNumber % radix);
+                charArray[index--] = Digits[remainder];
+                currentNumber = currentNumber / radix;
+            }
+    
+            string result = new(charArray, index + 1, BitsInLong - index - 1);
+            if (doubleNumber < 0)
+            {
+                result = "-" + result;
+            }
+    
+            return result;
+        }), 2, 2);
 
         private static IFunction Ceiling() => new Function("CEILING", "Rounds a number to the nearest integer or nearest multiple of significance", category, new FunctionDelegate((args) => Math.Ceiling(ToDouble(args!.First().Evaluate()))), 1, 1);
 
         private static IFunction Combin() => new Function("COMBIN", "Returns the number of combinations for the given number of items", category, new FunctionDelegate((args) =>
-                                                                                                        {
-                                                                                                            int n = ToInteger(args!.ElementAt(0).Evaluate());
-                                                                                                            int k = ToInteger(args!.ElementAt(1).Evaluate());
+        {
+            int n = ToInteger(args!.ElementAt(0).Evaluate());
+            int k = ToInteger(args!.ElementAt(1).Evaluate());
 
-                                                                                                            if (n < 0)
-                                                                                                            {
-                                                                                                                throw new FunctionException($"Number {n} cannot be negative.");
-                                                                                                            }
+            if (n < 0)
+            {
+                throw new FunctionException($"Number {n} cannot be negative.");
+            }
 
-                                                                                                            if (k < 0)
-                                                                                                            {
-                                                                                                                throw new FunctionException($"Number {k} cannot be negative.");
-                                                                                                            }
+            if (k < 0)
+            {
+                throw new FunctionException($"Number {k} cannot be negative.");
+            }
 
-                                                                                                            long factorialN = Enumerable.Range(1, n).Aggregate(1, (cur, i) => cur * i);
-                                                                                                            long divisor = Enumerable.Range(1, n - k).Aggregate(1, (cur, i) => cur * i);
+            long factorialN = Enumerable.Range(1, n).Aggregate(1, (cur, i) => cur * i);
+            long divisor = Enumerable.Range(1, n - k).Aggregate(1, (cur, i) => cur * i);
 
-                                                                                                            return factorialN / (k * divisor);
-                                                                                                        }), 2, 2);
+            return factorialN / (k * divisor);
+        }), 2, 2);
 
         private static IFunction Combina() => new Function("COMBINA", "Returns the number of combinations with repititions for the given number of items", category, new FunctionDelegate((args) =>
         {
@@ -307,39 +307,39 @@ namespace MathExpressionLibrary.Functions
         private static IFunction Int() => new Function("INT", "Rounds a number down to the nearest integer", category, new FunctionDelegate((args) => Math.Round(ToDouble(args!.First().Evaluate()), MidpointRounding.AwayFromZero)));
 
         private static IFunction LCM() => new Function("LCM", "The lowest common multiple", category, new FunctionDelegate((args) =>
-                                                                                                                                                                                                                                                        {
-                                                                                                                                                                                                                                                            int gcf(int a, int b)
-                                                                                                                                                                                                                                                            {
-                                                                                                                                                                                                                                                                while (b != 0)
-                                                                                                                                                                                                                                                                {
-                                                                                                                                                                                                                                                                    int temp = b;
-                                                                                                                                                                                                                                                                    b = a % b;
-                                                                                                                                                                                                                                                                    a = temp;
-                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                return a;
-                                                                                                                                                                                                                                                            }
+        {
+            int gcf(int a, int b)
+            {
+                while (b != 0)
+                {
+                    int temp = b;
+                    b = a % b;
+                    a = temp;
+                }
+                return a;
+            }
 
-                                                                                                                                                                                                                                                            int lcm(int a, int b)
-                                                                                                                                                                                                                                                            {
-                                                                                                                                                                                                                                                                return (a / gcf(a, b)) * b;
-                                                                                                                                                                                                                                                            }
+            int lcm(int a, int b)
+            {
+                return (a / gcf(a, b)) * b;
+            }
 
-                                                                                                                                                                                                                                                            int lcm1(params int[] numbers)
-                                                                                                                                                                                                                                                            {
-                                                                                                                                                                                                                                                                if (numbers == null || numbers.Length == 0) return 0;
+            int lcm1(params int[] numbers)
+            {
+                if (numbers == null || numbers.Length == 0) return 0;
 
-                                                                                                                                                                                                                                                                var result = numbers[0];
+                var result = numbers[0];
 
-                                                                                                                                                                                                                                                                for (int i = 1; i < numbers.Length; i++)
-                                                                                                                                                                                                                                                                {
-                                                                                                                                                                                                                                                                    result = lcm(result, numbers[i]);
-                                                                                                                                                                                                                                                                }
+                for (int i = 1; i < numbers.Length; i++)
+                {
+                    result = lcm(result, numbers[i]);
+                }
 
-                                                                                                                                                                                                                                                                return result;
-                                                                                                                                                                                                                                                            }
+                return result;
+            }
 
-                                                                                                                                                                                                                                                            return lcm1(args!.Select(x => ToInteger(x.Evaluate())).ToArray());
-                                                                                                                                                                                                                                                        }), 2);
+            return lcm1(args!.Select(x => ToInteger(x.Evaluate())).ToArray());
+        }), 2);
 
         private static IFunction PI() => new Function("PI", "The value of PI", category, new FunctionDelegate((args) => Math.PI));
 
